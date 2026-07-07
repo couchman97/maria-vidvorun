@@ -3,7 +3,7 @@ Office.onReady();
 function onMessageSendHandler(event) {
     // ⚠️ LISTINN yfir netföng sem á að vara við — bætt við eftir þörfum
     const warnAddresses = [
-        "maria@ronning.is"  // ← BREYTTU í raunverulegt netfang
+        "arnarl@rst.is"  // ← BREYTTU í raunverulegt netfang
     ];
     
     const item = Office.context.mailbox.item;
