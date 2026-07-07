@@ -1,32 +1,44 @@
 Office.onReady();
 
 function onMessageSendHandler(event) {
-    // ⚠️ LISTINN yfir netföng sem á að vara við — bætt við eftir þörfum
     const warnAddresses = [
         "maria@ronning.is"
     ];
     
+    // Oryggis-timeout - leyfa sendingu ef eitthvad hangir
+    const timeout = setTimeout(() => {
+        event.completed({ allowEvent: true });
+    }, 2000);
+    
     const item = Office.context.mailbox.item;
     
-    Promise.all([
-        new Promise(r => item.to.getAsync(res => r(res.value || []))),
-        new Promise(r => item.cc.getAsync(res => r(res.value || [])))
-    ]).then(([to, cc]) => {
-        const allRecipients = [...to, ...cc];
-        const hit = allRecipients.find(r => 
-            r.emailAddress && warnAddresses.some(w => 
-                r.emailAddress.toLowerCase() === w.toLowerCase()
-            )
-        );
-        
-        if (hit) {
-            event.completed({
-                allowEvent: false,
-                cancelMessage: `⚠️ STOPP! Þú ert að senda á ${hit.displayName} (${hit.emailAddress}). Þetta er María hjá Rönning — ekki María Rós hjá RST. Fjarlægðu hana og reyndu aftur ef þetta er ekki rétt.`
-            });
-        } else {
-            event.completed({ allowEvent: true });
-        }
+    item.to.getAsync(toResult => {
+        item.cc.getAsync(ccResult => {
+            clearTimeout(timeout);
+            
+            const all = (toResult.value || []).concat(ccResult.value || []);
+            
+            let match = null;
+            for (let i = 0; i < all.length; i++) {
+                const email = (all[i].emailAddress || "").toLowerCase().trim();
+                for (let j = 0; j < warnAddresses.length; j++) {
+                    if (email === warnAddresses[j].toLowerCase().trim()) {
+                        match = all[i];
+                        break;
+                    }
+                }
+                if (match) break;
+            }
+            
+            if (match) {
+                event.completed({
+                    allowEvent: false,
+                    cancelMessage: "STOPP! Thu ert ad senda a " + match.displayName + " (" + match.emailAddress + ")."
+                });
+            } else {
+                event.completed({ allowEvent: true });
+            }
+        });
     });
 }
 
