@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xsi:type="MailApp">
+  
+  <Id>a4c8f2d1-9b7e-4f3a-8c2d-1e5f6a7b8c9d</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Sofus</ProviderName>
+  <DefaultLocale>is-IS</DefaultLocale>
+  <DisplayName DefaultValue="Maria vidvorun"/>
+  <Description DefaultValue="Vidvorun thegar sent er a Mariu Adalsteinsdottur hja Ronning"/>
+  <IconUrl DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/icon-128.png"/>
+  <SupportUrl DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/"/>
+  
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.10"/>
+    </Sets>
+  </Requirements>
+  
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/commands.html"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  
+  <Permissions>ReadWriteMailbox</Permissions>
+  
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+  
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+      
+      <Requirements>
+        <bt:Sets DefaultMinVersion="1.10">
+          <bt:Set Name="Mailbox"/>
+        </bt:Sets>
+      </Requirements>
+      
+      <Hosts>
+        <Host xsi:type="MailHost">
+          <Runtimes>
+            <Runtime resid="EventRuntime.Url">
+              <Override type="javascript" resid="EventJS.Url"/>
+            </Runtime>
+          </Runtimes>
+          
+          <DesktopFormFactor>
+            <FunctionFile resid="Commands.Url"/>
+            
+            <ExtensionPoint xsi:type="LaunchEvent">
+              <LaunchEvents>
+                <LaunchEvent Type="OnMessageSend" 
+                             FunctionName="onMessageSendHandler" 
+                             SendMode="PromptUser"/>
+              </LaunchEvents>
+              <SourceLocation resid="EventRuntime.Url"/>
+            </ExtensionPoint>
+          </DesktopFormFactor>
+        </Host>
+      </Hosts>
+      
+      <Resources>
+        <bt:Images>
+          <bt:Image id="Icon.16x16" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/icon-16.png"/>
+          <bt:Image id="Icon.32x32" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/icon-32.png"/>
+          <bt:Image id="Icon.80x80" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/icon-80.png"/>
+        </bt:Images>
+        <bt:Urls>
+          <bt:Url id="Commands.Url" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/commands.html"/>
+          <bt:Url id="EventRuntime.Url" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/commands.html"/>
+          <bt:Url id="EventJS.Url" DefaultValue="https://YOUR-USERNAME.github.io/maria-vidvorun/commands.js"/>
+        </bt:Urls>
+      </Resources>
+      
+    </VersionOverrides>
+  </VersionOverrides>
+</OfficeApp>
